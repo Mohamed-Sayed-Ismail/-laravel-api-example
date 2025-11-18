@@ -4,6 +4,10 @@
 
 This Laravel API provides location-based services for finding places of interest in Belgium. The API is designed specifically for CLI tools and API clients - browser access is restricted.
 
+### 🔑 API Key Features
+- **Without API Key**: Basic location data and functionality
+- **With API Key**: Enhanced responses including Google Maps links for each location
+
 ## Base URL
 
 ```
@@ -12,7 +16,12 @@ http://localhost:8000/api
 
 ## Authentication
 
-Currently, no authentication is required. All endpoints are accessible to CLI/API clients.
+The API supports optional API key authentication for enhanced features:
+
+- **Header**: `X-API-Key: your_api_key_here`
+- **Query Parameter**: `?api_key=your_api_key_here`
+
+Generate your API key at: `http://localhost:8000`
 
 ## Available Endpoints
 
@@ -75,7 +84,7 @@ Currently, no authentication is required. All endpoints are accessible to CLI/AP
 curl "http://localhost:8000/api/locations/search?latitude=50.8503&longitude=4.3517&search_type=restaurant&distance=5"
 ```
 
-**Response:**
+**Response without API Key:**
 ```json
 {
   "success": true,
@@ -93,6 +102,42 @@ curl "http://localhost:8000/api/locations/search?latitude=50.8503&longitude=4.35
       "phone": "+32 2 123 4567",
       "website": "https://example.com",
       "distance": 0.5
+    }
+  ],
+  "search_parameters": {
+    "user_latitude": 50.8503,
+    "user_longitude": 4.3517,
+    "search_type": "restaurant",
+    "max_distance_km": 5,
+    "results_count": 1
+  }
+}
+```
+
+**Enhanced Request with API Key:**
+```bash
+curl -H "X-API-Key: your_api_key_here" "http://localhost:8000/api/locations/search?latitude=50.8503&longitude=4.3517&search_type=restaurant&distance=5"
+```
+
+**Enhanced Response with API Key:**
+```json
+{
+  "success": true,
+  "data": [
+    {
+      "id": 1,
+      "name": "Restaurant Example",
+      "description": "Great food",
+      "type": "restaurant",
+      "latitude": 50.8503,
+      "longitude": 4.3517,
+      "address": "Example Street 123",
+      "city": "Brussels",
+      "postal_code": "1000",
+      "phone": "+32 2 123 4567",
+      "website": "https://example.com",
+      "distance": 0.5,
+      "google_maps_url": "https://www.google.com/maps?q=50.8503,4.3517"
     }
   ],
   "search_parameters": {
@@ -234,3 +279,4 @@ http GET localhost:8000/api/locations/search latitude==50.8503 longitude==4.3517
 - The API is configured to only respond to CLI/API clients (browsers are blocked)
 - Coordinates should use decimal degrees format
 - Distance calculations are in kilometers
+- **🌍 Google Maps Integration**: When using an API key, all location responses include `google_maps_url` field with direct links to Google Maps for easy navigation

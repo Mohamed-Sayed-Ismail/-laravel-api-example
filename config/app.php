@@ -123,4 +123,16 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | API Key
+    |--------------------------------------------------------------------------
+    |
+    | API key for accessing enhanced features like Google Maps integration.
+    | When set, location responses will include Google Maps links.
+    |
+    */
+
+    'api_key' => env('API_KEY'),
+
 ];

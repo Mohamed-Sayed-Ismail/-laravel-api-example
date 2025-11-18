@@ -38,6 +38,12 @@ class LocationController extends Controller
                     sin(deg2rad($location->latitude))
                 );
                 $location->distance = round($distance, 2);
+                
+                // Add Google Maps link if API key is configured
+                if (config('app.api_key')) {
+                    $location->google_maps_url = "https://www.google.com/maps?q={$location->latitude},{$location->longitude}";
+                }
+                
                 return $location;
             })
             ->filter(function ($location) use ($maxDistance) {
@@ -81,6 +87,14 @@ class LocationController extends Controller
     {
         $locations = Location::where('type', $type)->get();
 
+        // Add Google Maps links if API key is configured
+        if (config('app.api_key')) {
+            $locations = $locations->map(function ($location) {
+                $location->google_maps_url = "https://www.google.com/maps?q={$location->latitude},{$location->longitude}";
+                return $location;
+            });
+        }
+
         return response()->json([
             'success' => true,
             'data' => $locations
@@ -93,6 +107,14 @@ class LocationController extends Controller
     public function index(): JsonResponse
     {
         $locations = Location::all();
+        
+        // Add Google Maps links if API key is configured
+        if (config('app.api_key')) {
+            $locations = $locations->map(function ($location) {
+                $location->google_maps_url = "https://www.google.com/maps?q={$location->latitude},{$location->longitude}";
+                return $location;
+            });
+        }
         
         return response()->json([
             'success' => true,

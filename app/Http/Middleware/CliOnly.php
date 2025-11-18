@@ -34,6 +34,11 @@ class CliOnly
             return true;
         }
 
+        // Allow access to the home page for all clients
+        if ($request->is('/')) {
+            return true;
+        }
+
         $userAgent = $request->header('User-Agent', '');
         $acceptHeader = $request->header('Accept', '');
 

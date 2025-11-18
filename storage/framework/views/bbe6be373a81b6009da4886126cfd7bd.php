@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -324,7 +324,7 @@ curl -H "X-API-Key: your_api_key_here" "http://localhost:8000/api/locations/sear
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '<?php echo e(csrf_token()); ?>'
                 },
                 body: JSON.stringify({
                     email: email,
@@ -358,4 +358,4 @@ curl -H "X-API-Key: your_api_key_here" "http://localhost:8000/api/locations/sear
         });
     </script>
 </body>
-</html>
+</html><?php /**PATH /home/mohamed/Software/laravel-api-example/resources/views/home.blade.php ENDPATH**/ ?>
